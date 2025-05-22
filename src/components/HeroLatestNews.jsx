@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import Spinner from "./Spinner";
 
 const API_URL = "https://newsapi.org/v2/everything";
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
@@ -12,6 +13,7 @@ const HeroLatestNews = () => {
 
   const fecthHeadlineNews = async () => {
     setLoading(true);
+    setError("")
     try {
       const response = await axios.get(API_URL, {
         params: {
@@ -27,9 +29,8 @@ const HeroLatestNews = () => {
 
       const randomArticle = article[randomIndex];
       setArticle([randomArticle]);
-      console.log(randomArticle);
 
-      //   setArticle(response.data);
+        // setArticle(response.data);
       //   console.log(response.data.articles);
     } catch (error) {
       setError("Terjadi kesalahan saat mengambil data", error);
@@ -43,10 +44,18 @@ const HeroLatestNews = () => {
     fecthHeadlineNews();
   }, []);
 
+  if(loading) {
+    return (
+      <div className="p-4 mt-10 text-center">
+        <Spinner />
+      </div>
+    )
+  }
+
   return (
     <section className="mt-8">
       <div className="relative">
-        {article.map((item) => {
+          {article.map((item, index) => {
           const { publishedAt } = item;
           const date = new Date(publishedAt);
           const formattedDate = date.toLocaleString("en-US", {
@@ -57,7 +66,7 @@ const HeroLatestNews = () => {
           });
 
           return (
-            <div key={item.id}>
+            <div key={index}>
               <div className="w-full h-[580px]">
                 <img
                   src={item.urlToImage}
@@ -75,7 +84,7 @@ const HeroLatestNews = () => {
                 </div>
                 <div className="flex w-[50%] mt-5 lg:mt-0 items-start lg:items-end flex-col space-y-5">
                   <span className="text-lg">{formattedDate}</span>
-                  <button className="p-2 border hover:text-orange-600 transition-all delay-100 ease-in-out mt-5 lg:mt-0">Read The Article</button>
+                  <button className="p-2 border hover:text-orange-600 transition-all delay-100 ease-in-out -mt-2 lg:mt-0">Read The Article</button>
                 </div>
               </div>
             </div>
