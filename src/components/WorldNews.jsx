@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
-import ImageTextOverlay from "./ImageTextOverlay";
+import ImageOverlay from "./ImageOverlay";
 import axios from "axios";
 import HorizontalCards from "./HorizontalCards";
 import Spinner from "./Spinner";
-import VerticalCards from "./VerticalCards";
 
 const API_URL = "https://newsapi.org/v2/everything";
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
-const LatestNews = () => {
+const WorldNews = () => {
   const [article, setArticle] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fecthLatestNews = async () => {
+  const fecthWorldNews = async () => {
     setLoading(true);
     try {
       const response = await axios.get(API_URL, {
         params: {
-          q: "trending",
+          q: "europe",
           sortBy: "publishedAt",
           pageSize: 20,
           apiKey: API_KEY,
@@ -27,7 +26,7 @@ const LatestNews = () => {
 
       const article = response.data.articles;
       const shuffled = [...article].sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(2, 3);
+      const selected = shuffled.slice(0, 1);
       setArticle(selected);
 
       // const maxIndex = article.length - 1;
@@ -45,7 +44,7 @@ const LatestNews = () => {
   };
 
   useEffect(() => {
-    fecthLatestNews();
+    fecthWorldNews();
   }, []);
 
   if (loading) {
@@ -59,26 +58,21 @@ const LatestNews = () => {
   return (
     <main className="max-w-7xl mx-auto mt-8 lg:mt-24 font-newsreader">
       <div className="text-5xl border-b">
-        <h1 className="font-bold">Latest News</h1>
+        <h1 className="font-bold">World News</h1>
       </div>
-      {/* Container 1 */}
       <div className="mt-7 grid grid-cols-1 lg:grid-cols-2">
-        {/* Container 1.1 */}
+        {/* Container 1 */}
         <div className="">
-          <ImageTextOverlay articles={article} />
+          <ImageOverlay articles={article} />
         </div>
-        {/* Container 1.2 */}
+        {/* Container 2 */}
         <div className="space-y-1.5">
           <HorizontalCards />
           <HorizontalCards />
         </div>
       </div>
-      {/* Container 2 */}
-      <div>
-        <VerticalCards />
-      </div>
     </main>
   );
 };
 
-export default LatestNews;
+export default WorldNews;

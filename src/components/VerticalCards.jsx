@@ -4,14 +4,15 @@ import React, { useEffect, useState } from "react";
 const API_URL = "https://newsapi.org/v2/everything";
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
-const HorizontalCards = () => {
+const VerticalCards = () => {
   const [article, setArticle] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
   const fecthLatestNews = async () => {
     try {
       const response = await axios.get(API_URL, {
         params: {
-          q: "america",
+          q: "technology",
           sortBy: "publishedAt",
           pageSize: 20,
           apiKey: API_KEY,
@@ -20,7 +21,7 @@ const HorizontalCards = () => {
 
       const article = response.data.articles;
       const shuffled = [...article].sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, 1);
+      const selected = shuffled.slice(0, 3);
       setArticle(selected);
 
       // const maxIndex = article.length - 1;
@@ -40,7 +41,7 @@ const HorizontalCards = () => {
   }, []);
 
   return (
-    <div className="h-48 flex items-center mt-2 lg:mt-0">
+    <div className="grid grid-cols-1 md:grid-cols-3">
       {article.map((item, index) => {
         const { publishedAt } = item;
         const date = new Date(publishedAt);
@@ -51,52 +52,29 @@ const HorizontalCards = () => {
           day: "numeric",
         });
         return (
-          <>
-            <div
-              key={index}
-              className="w-full lg:max-w-1/2 h-full flex flex-col justify-center p-2"
-            >
-              <h1 className="text-lg font-semibold hover:text-orange-700 cursor-pointer">{item.title}</h1>
-              <div className="flex gap-3 flex-wrap items-center text-sm">
-                <span>{item.author ? item.author : "Unknown"}</span>
+          <div key={index} className="w-full p-1.5 mt-2">
+            <div className="w-full">
+              <img
+                src={item.urlToImage}
+                alt={item.title}
+                className="w-full h-52 object-cover"
+              />
+            </div>
+            <div className="flex flex-col mt-2">
+              <p className="font-semibold hover:text-orange-600 cursor-pointer">
+                {item.title}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <span>{item.author ? item.author : 'Unknown'}</span>
                 <span> - </span>
                 <span>{formattedDate}</span>
               </div>
             </div>
-            <div className="max-w-1/2 w-full">
-              <img
-                src={item.urlToImage}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
-            </div>
-          </>
+          </div>
         );
       })}
-      {/* Left */}
-      {/* <div className="max-w-1/2 h-full flex flex-col justify-center">
-        <h1 className="text-lg font-semibold">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis,
-          sed!
-        </h1>
-        <div className="flex gap-3 items-center text-sm">
-          <span>Author</span>
-          <span> - </span>
-          <span>Date</span>
-        </div>
-      </div> */}
-      {/* Right */}
-      {/* <div className="max-w-1/2 w-full">
-        <div className="relative overflow-hidden">
-          <img
-            src="src\assets\bg.jpg"
-            alt=""
-            className="w-full h-48 object-cover rounded-md"
-          />
-        </div>
-      </div> */}
     </div>
   );
 };
 
-export default HorizontalCards;
+export default VerticalCards;

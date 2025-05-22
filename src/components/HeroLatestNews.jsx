@@ -52,6 +52,12 @@ const HeroLatestNews = () => {
     )
   }
 
+  if(error) {
+    return (
+      <p>Something Wrong...</p>
+    )
+  }
+
   return (
     <section className="mt-8">
       <div className="relative">
