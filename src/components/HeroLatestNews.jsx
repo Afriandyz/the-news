@@ -68,14 +68,14 @@ const HeroLatestNews = () => {
 
               <div className="mt-7 grid grid-cols-1 lg:flex">
                 <div className="flex flex-col w-full">
-                  <div className="p-2 border max-w-fit mb-2">
+                  <div className="p-2 border max-w-fit mb-5 lg:mb-2">
                     <span>{item.author ? item.author : "Unknown"}</span>
                   </div>
-                  <h3 className="font-bold text-2xl hover:text-orange-700">{item.title}</h3>
+                  <h3 className="font-bold text-6xl hover:text-orange-700">{item.title}</h3>
                 </div>
-                <div className="flex w-[50%] mt-5 lg:mt-0 items-start lg:items-end flex-col justify-evenly">
-                  <span>{formattedDate}</span>
-                  <button className="p-2 border hover:text-orange-600 transition-all delay-100 ease-in-out">Read The Article</button>
+                <div className="flex w-[50%] mt-5 lg:mt-0 items-start lg:items-end flex-col space-y-5">
+                  <span className="text-lg">{formattedDate}</span>
+                  <button className="p-2 border hover:text-orange-600 transition-all delay-100 ease-in-out mt-5 lg:mt-0">Read The Article</button>
                 </div>
               </div>
             </div>

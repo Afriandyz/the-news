@@ -1,4 +1,5 @@
 import Hero from "../components/Hero"
+import LatestNews from "../components/LatestNews"
 import Navbar from "../components/Navbar"
 
 const Homepages = () => {
@@ -6,6 +7,7 @@ const Homepages = () => {
     <div className="">
         <Navbar />
         <Hero />
+        <LatestNews />
     </div>
   )
 }
