@@ -1,18 +1,19 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import PodcastCard from "./PodcastCard";
+import axios from "axios";
 
 const API_URL = "https://newsapi.org/v2/everything";
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
-const VerticalCards = () => {
+const Podcast = () => {
   const [article, setArticle] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fecthLatestNews = async () => {
+  const fecthPodcastNews = async () => {
     try {
       const response = await axios.get(API_URL, {
         params: {
-          q: "technology",
+          q: "Podcast",
           sortBy: "publishedAt",
           pageSize: 20,
           apiKey: API_KEY,
@@ -36,7 +37,7 @@ const VerticalCards = () => {
       }
 
       const shuffled = [...validArticles].sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, 3);
+      const selected = shuffled.slice(0, 6);
       setArticle(selected);
 
       // const maxIndex = article.length - 1;
@@ -52,44 +53,21 @@ const VerticalCards = () => {
   };
 
   useEffect(() => {
-    fecthLatestNews();
+    fecthPodcastNews();
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3">
-      {article.map((item, index) => {
-        const { publishedAt } = item;
-        const date = new Date(publishedAt);
-        const formattedDate = date.toLocaleString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        return (
-          <div key={index} className="w-full p-1.5 mt-2">
-            <div className="w-full">
-              <img
-                src={item.urlToImage}
-                alt={item.title}
-                className="w-full h-52 object-cover"
-              />
-            </div>
-            <div className="flex flex-col mt-2">
-              <p className="font-semibold hover:text-orange-600 cursor-pointer">
-                {item.title}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <span>{item.author ? item.author : "Unknown"}</span>
-                <span> - </span>
-                <span>{formattedDate}</span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+    <main className="max-w-7xl mx-auto mt-8 lg:mt-24 font-newsreader">
+      <div className="text-5xl border-b">
+        <h1 className="font-bold">Podcast</h1>
+      </div>
+      <div className="mt-7">
+        <div>
+          <PodcastCard articles={article} />
+        </div>
+      </div>
+    </main>
   );
 };
 
-export default VerticalCards;
+export default Podcast;

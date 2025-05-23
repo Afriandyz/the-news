@@ -17,7 +17,7 @@ const WorldNews = () => {
     try {
       const response = await axios.get(API_URL, {
         params: {
-          q: "europe",
+          q: "business",
           sortBy: "publishedAt",
           pageSize: 20,
           apiKey: API_KEY,
@@ -25,7 +25,22 @@ const WorldNews = () => {
       });
 
       const article = response.data.articles;
-      const shuffled = [...article].sort(() => 0.5 - Math.random());
+
+      const validArticles = article.filter(
+        (article) =>
+          article.urlToImage &&
+          article.title &&
+          article.title !== "[Removed]" &&
+          article.description &&
+          article.description !== "[Removed]"
+      );
+
+      if (validArticles.length < 3) {
+        setErrorMessage("Tidak cukup artikel valid yang ditemukan");
+        return;
+      }
+
+      const shuffled = [...validArticles].sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(0, 1);
       setArticle(selected);
 

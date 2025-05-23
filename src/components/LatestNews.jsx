@@ -26,7 +26,22 @@ const LatestNews = () => {
       });
 
       const article = response.data.articles;
-      const shuffled = [...article].sort(() => 0.5 - Math.random());
+
+      const validArticles = article.filter(
+        (article) =>
+          article.urlToImage &&
+          article.title &&
+          article.title !== "[Removed]" &&
+          article.description &&
+          article.description !== "[Removed]"
+      );
+
+      if (validArticles.length < 3) {
+        setErrorMessage("Tidak cukup artikel valid yang ditemukan");
+        return;
+      }
+
+      const shuffled = [...validArticles].sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(2, 3);
       setArticle(selected);
 
